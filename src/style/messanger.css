@@ -1,0 +1,19 @@
+main.messanger {
+    width: 1000px;
+    height: 80vh;
+    display: flex;
+
+    border: 1px solid black;
+}
+
+main.messanger > aside {
+    height: 100%;
+    width: 25%;
+
+    border-right: 1px solid black
+}
+
+main.messanger > section {
+    height: 100%;
+    width: 75%;
+}
