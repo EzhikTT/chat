@@ -1,0 +1,24 @@
+section.chat > footer {
+    background: rgb(7, 15, 49, 0.8);
+    display: flex;
+    padding: 4px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+section.chat > footer > textarea {
+    resize: none;
+    width: 80%;
+}
+
+section.chat > footer > div {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+section.chat > footer > div > button:first-child {
+    margin-bottom: 4px;
+}

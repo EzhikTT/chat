@@ -6,7 +6,17 @@ import '../../style/aside.css'
 import Dialogue from './Dialogue.jsx'
 
 const Aside = () => {
-    const arMessages = useSelector(store => store.messanger.messages)
+    const users = useSelector(({messanger}) => messanger.users)
+    const chats = useSelector(({messanger}) => messanger.chats)
+
+    const getMessagesForUser = (userId) => {
+        for(let i of chats){
+            if(i.userId === userId){
+                return [...i.messages].reverse()
+            }
+        }
+        return []
+    }   
 
     return <aside>
         <header>
@@ -14,12 +24,18 @@ const Aside = () => {
             <div>User name</div>
         </header>
         <section>
-            {arMessages.map(
-                (message) => <Dialogue userName={message.userName} 
-                                       message={message.message}
-                                       count={message.count}
-                                       time={message.time}/>)
-            }
+            {users.map(
+                (user, id) => {
+                    const lastMessage = getMessagesForUser(user.id)[0]
+                    return <Dialogue userName={user.name} 
+                                    message={lastMessage.message || ''}
+                                    count={''}
+                                    time={lastMessage.time || ''}
+                                    avatar={user.avatar}
+                                    key={`dialogue_${id}`}
+                                    userId={user.id}/>
+                    })
+                }
         </section>
     </aside>
 }

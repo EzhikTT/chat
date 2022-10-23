@@ -1,0 +1,15 @@
+section.chat > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 32px;
+    background: rgb(7, 15, 49, 0.8);
+    color: white;
+}
+section.chat > header > span.name {
+    font-size: 1.5rem;
+}
+section.chat > header > img {
+    width: 40px;
+    height: 40px;
+}
