@@ -3,6 +3,7 @@ aside > header {
     display: flex;
     align-items: center;
     box-sizing: border-box;
+    position: relative;
 
     border-bottom: 1px solid black;
 }
@@ -20,4 +21,18 @@ aside > header > div {
 aside > section {
     height: calc(100% - 92px);
     overflow: scroll;
+}
+
+aside > header:hover svg.settings {
+    display: block;
+}
+
+aside > header svg.settings {
+    display: none;
+    width: 30px;
+    height: 30px;
+    opacity: 0.5;
+    position: absolute;
+    right: 8px;
+    bottom: calc(50% - 15px);
 }

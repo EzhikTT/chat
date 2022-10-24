@@ -1,4 +1,4 @@
-main.messanger {
+main {
     width: 1000px;
     height: 80vh;
     display: flex;
@@ -6,14 +6,14 @@ main.messanger {
     border: 1px solid black;
 }
 
-main.messanger > aside {
+main > aside {
     height: 100%;
     width: 25%;
 
     border-right: 1px solid black
 }
 
-main.messanger > section {
+main > section {
     height: 100%;
     width: 75%;
 }

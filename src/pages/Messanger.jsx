@@ -5,9 +5,9 @@ import Aside from '../components/messanger/Aside.jsx'
 import Chat from '../components/messanger/Chat.jsx'
 import { addMessage, setChats, setMessages, setUsers } from '../store/messanger.js'
 
-import data from '../mocks/chat.json'
+// import data from '../mocks/chat.json'
 
-import '../style/messanger.css'
+// import '../style/messanger.css'
 
 const Messanger = () => {
     const arMessages = [
@@ -43,46 +43,80 @@ const Messanger = () => {
         // dispatch(setMessages(arMessages))
         // dispatch()
 
-        fetchData()
+        // fetchData()
+
+        getData()
     }, [])
+
+
+    const fetchD = async () => {
+        try{
+            fetchData()
+        }
+        catch(e){
+            console.log('useEffect', 'error', e)
+        }
+    }
 
     const fetchData = () => {
         
-        console.log(data);
+        // console.log(data);
 
-        dispatch(setUsers(data.users))
-        dispatch(setChats(data.chats))
-
+        // dispatch(setUsers(data.users))
+        // dispatch(setChats(data.chats))
 
         const promise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 console.log('setTimeout')
+                // return resolve()
                 return resolve(new Promise((res, rej) => {
                     setTimeout(() => {
                         console.log('setTimeout 1')
-                        return res('success')
+                        return rej('some error')
                     }, 2000)
                 }))
             }, 2000)
         })
+
+        // promise.then(() => {
+        //     console.log('success')
+        // })
+
+        // console.log('fetch data')
 
         promise.then((success) => {
             return success
         }).then((success1) => {
             console.log('s2', success1)
         }).catch((error) => {
-            console.log(error)
+            // throw error
         })
 
         console.log('fetch data');
 
         fetch(
-            'http://localhost:8080/src/mocks/chat.json'
+            'http://localhost:8888/test'
         ).then(result => {
+            // debugger
             return result.json()
         }).then(result => {
             console.log(result)
+            dispatch(setUsers(result.users))
+            dispatch(setChats(result.chats))
         })
+    }
+
+    const getData = async () => {
+        try{
+            const res = await fetch('http://localhost:8888/test') // fetch().then()
+            const {users, chats} = await res.json() // fetch().then().then()
+            
+            dispatch(setUsers(users))
+            dispatch(setChats(chats))
+        }
+        catch(p){ // error
+            console.log(p)
+        }
     }
 
     const onClick = () => {
@@ -95,10 +129,10 @@ const Messanger = () => {
         dispatch(addMessage(newMessage))
     }
 
-    return <main className='messanger'>
+    return <>
         <Aside/>
         <Chat/>
-    </main>
+    </>
 }
 
 export default Messanger
