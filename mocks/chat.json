@@ -1,0 +1,107 @@
+{
+    "chats": [
+        {
+            "userId": 1,
+            "chatId": 1,
+            "messages": [
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                }
+            ]
+        },
+        {
+            "userId": 2,
+            "chatId": 2,
+            "messages": [
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                }
+            ]
+        },
+        {
+            "userId": 3,
+            "chatId": 3,
+            "messages": [
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                }
+            ]
+        }
+    ],
+    "users": [
+        {
+            "id": 1,
+            "name": "User Name 1",
+            "avatar": ""
+        },
+        {
+            "id": 2,
+            "name": "User Name 2",
+            "avatar": ""
+        },
+        {
+            "id": 3,
+            "name": "User Name 3",
+            "avatar": ""
+        }
+    ]
+}
