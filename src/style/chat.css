@@ -1,0 +1,12 @@
+section.chat {
+    position: relative;
+}
+section.chat > div.messages {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    height: calc(100% - 50px - 55px);
+}
+section.chat > div.messages > div.my {
+    margin-left: auto;
+}

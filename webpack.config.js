@@ -3,23 +3,27 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpackMockServer = require("webpack-mock-server");
 
 const isProduction = process.env.NODE_ENV == 'production';
 
-
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
-
-
 
 const config = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
+        publicPath: '/'
     },
     devServer: {
         open: true,
         host: 'localhost',
+        onBeforeSetupMiddleware: devServer => webpackMockServer.use(devServer.app, {
+            port: 8888,
+            entry: ['webpack.mock.ts']
+        }),
     },
+    devtool: 'source-map',
     plugins: [
         new HtmlWebpackPlugin({
             template: 'index.html',
@@ -54,7 +58,6 @@ module.exports = () => {
         config.mode = 'production';
         
         config.plugins.push(new MiniCssExtractPlugin());
-        
         
     } else {
         config.mode = 'development';
