@@ -7,4 +7,8 @@ export default webpackMockServer.add((app, helper) => {
   app.get("/test", (_req, res) => {
     res.sendFile(nodePath.join(__dirname, "/mocks/chat.json"));
   });
+  app.get("/users/:userId", (_req, res) => {
+    const userId = _req.params['userId']
+    res.sendFile(nodePath.join(__dirname, `/mocks/users/${userId}.json`));
+  });
 });

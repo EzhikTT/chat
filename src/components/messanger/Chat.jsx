@@ -17,7 +17,12 @@ const Chat = () => {
     return <section className='chat'>
         <ChatHeader/>
         <div className='messages'>
-            {[...data.messages].reverse().map((message, id) => <Message key={`message_${id}`} text={message.message} time={message.time} isMy={message.isMy}/>)}
+            {[...data.messages].reverse().map((message, id) => 
+                    <Message key={`message_${id}`} 
+                             text={message.message} 
+                             time={message.time} 
+                             isMy={message.isMy}/>
+            )}
         </div>
         <ChatForm/>
     </section>

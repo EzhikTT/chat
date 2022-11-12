@@ -27,7 +27,9 @@ aside > header:hover svg.settings {
     display: block;
 }
 
-aside > header svg.settings {
+aside > header svg.settings,
+aside > header svg.back 
+{
     display: none;
     width: 30px;
     height: 30px;
@@ -35,4 +37,7 @@ aside > header svg.settings {
     position: absolute;
     right: 8px;
     bottom: calc(50% - 15px);
+}
+aside > header svg.back {
+    display: block;
 }

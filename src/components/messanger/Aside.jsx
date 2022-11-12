@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -6,6 +6,7 @@ import avatar from '../../assets/avatar.png'
 import '../../style/aside.css'
 import Header from '../Header.jsx'
 import Dialogue from './Dialogue.jsx'
+import Polilog from './Polilog.jsx'
 
 const Aside = () => {
     const users = useSelector(({messanger}) => messanger.users)
@@ -19,6 +20,11 @@ const Aside = () => {
         }
         return []
     }   
+
+    const polilogs = useMemo(() => {
+        const polichats = chats.filter(({usersIds}) => usersIds)
+        return polichats.map((chat, id) => <Polilog title={chat.name} message={''}></Polilog>)
+    }, [chats])
 
     return <aside>
         <Header>
@@ -40,6 +46,7 @@ const Aside = () => {
                                     userId={user.id}/>
                     })
                 }
+                {polilogs}
         </section>
     </aside>
 }

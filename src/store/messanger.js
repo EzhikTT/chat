@@ -4,7 +4,8 @@ const initialState = {
     messages: [],
     chats: [],
     chat: {},
-    users: []
+    users: [],
+    selectedUserId: -1
 }
 
 const messangerSlice = createSlice({
@@ -54,9 +55,12 @@ const messangerSlice = createSlice({
                     }
                 }
             }
+        },
+        setSelectedUserId(state, {payload: id}){
+            state.selectedUserId = id
         }
     }
 })
 
-export const {setMessages, addMessage, setChatByUser, setChats, setUsers, sendMessage} = messangerSlice.actions
+export const {setSelectedUserId, setMessages, addMessage, setChatByUser, setChats, setUsers, sendMessage} = messangerSlice.actions
 export default messangerSlice.reducer

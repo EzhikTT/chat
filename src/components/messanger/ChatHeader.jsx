@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import avatar from '../../assets/avatar.png'
-import { setChatByUser } from '../../store/messanger'
+import { setChatByUser, setSelectedUserId } from '../../store/messanger'
 import '../../style/chatHeader.css'
 
 const ChatHeader = () => {
@@ -20,7 +20,10 @@ const ChatHeader = () => {
 
     return <header>
         <span onClick={() => dispatch(setChatByUser(-1))}>{"<"}</span>
-        <span className='name'>{getUser().name || 'no name'}</span>
+        <span className='name' 
+              onClick={() => dispatch(setSelectedUserId(getUser().id))}>
+            {getUser().name || 'no name'}
+            </span>
         <img src={getUser().avatar || avatar}/>
     </header>
 }

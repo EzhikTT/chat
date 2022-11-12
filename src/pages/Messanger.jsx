@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Aside from '../components/messanger/Aside.jsx'
 import Chat from '../components/messanger/Chat.jsx'
-import { addMessage, setChats, setMessages, setUsers } from '../store/messanger.js'
+import SliderPanel from '../elements/molecules/SliderPanel.jsx'
+import { addMessage, setChats, setMessages, setSelectedUserId, setUsers } from '../store/messanger.js'
 
 // import data from '../mocks/chat.json'
 
@@ -129,9 +130,45 @@ const Messanger = () => {
         dispatch(addMessage(newMessage))
     }
 
+
+    const [hiddePanel, setHiddePanel] = useState(true)
+    const selectedUserId = useSelector(({messanger}) => messanger.selectedUserId)
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        if(~selectedUserId){ // ~num === -1 * (num + 1)
+            setHiddePanel(false)
+            if(!user){
+                getUserData()
+            }
+        }
+        else {
+            setHiddePanel(true)
+            setUser(null)
+        }
+    }, [selectedUserId])
+    
+    const getUserData = async () => {
+        try {
+            const res = await fetch(`http://localhost:8888/users/${selectedUserId}`) // fetch().then()
+            setUser(await res.json()) // fetch().then().then()
+        }
+        catch(p) { // error
+            console.log('fetch error - ', p)
+        }
+    }
+
     return <>
         <Aside/>
         <Chat/>
+        <SliderPanel isHidden={hiddePanel} 
+                     hidePanel={() => dispatch(setSelectedUserId(-1))}>
+            {user && <div>
+                {Object.keys(user).map(key => <div key={`selected_user_${key}`}>
+                    {key}: {user[key]}
+                </div>)}
+            </div>}
+        </SliderPanel>
     </>
 }
 
