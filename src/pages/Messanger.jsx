@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Aside from '../components/messanger/Aside.jsx'
 import Chat from '../components/messanger/Chat.jsx'
 import SliderPanel from '../elements/molecules/SliderPanel.jsx'
-import { addMessage, setChats, setMessages, setSelectedUserId, setUsers } from '../store/messanger.js'
+import { addMessage, setChats, setMessages, setSelectedUsersIds, setUsers } from '../store/messanger.js'
 
 // import data from '../mocks/chat.json'
 
@@ -110,8 +111,15 @@ const Messanger = () => {
     const getData = async () => {
         try{
             const res = await fetch('http://localhost:8888/test') // fetch().then()
-            const {users, chats} = await res.json() // fetch().then().then()
+            const {users: usersData, chats} = await res.json() // fetch().then().then()
             
+            const users = await Promise.all(
+                usersData.map(async (user) => {
+                    const res = await fetch(`http://localhost:8888/users/${user.id}`) // fetch().then()
+                    return await res.json()
+                })
+            )
+
             dispatch(setUsers(users))
             dispatch(setChats(chats))
         }
@@ -132,21 +140,24 @@ const Messanger = () => {
 
 
     const [hiddePanel, setHiddePanel] = useState(true)
-    const selectedUserId = useSelector(({messanger}) => messanger.selectedUserId)
-    const [user, setUser] = useState(null)
+    const selectedUserIds = useSelector(({messanger}) => messanger.selectedUserIds)
+    const activeChat = useSelector(({messanger}) => messanger.chat)
+    const me = useSelector(({settings}) => settings.user)
+    // const [user, setUser] = useState(null)
+    const [users, setUsersState] = useState([])
 
     useEffect(() => {
-        if(~selectedUserId){ // ~num === -1 * (num + 1)
+        if(selectedUserIds && selectedUserIds.length > 0){ // ~num === -1 * (num + 1)
             setHiddePanel(false)
-            if(!user){
-                getUserData()
+            if(users.length === 0){
+                getUsersData()
             }
         }
         else {
             setHiddePanel(true)
-            setUser(null)
+            setUsersState([])
         }
-    }, [selectedUserId])
+    }, [selectedUserIds])
     
     const getUserData = async () => {
         try {
@@ -158,16 +169,52 @@ const Messanger = () => {
         }
     }
 
+    const getUsersData = async () => {
+        const users = await Promise.all(
+            selectedUserIds.map(async (id) => {
+                const res = await fetch(`http://localhost:8888/users/${id}`) // fetch().then()
+                return await res.json()
+            })
+        )
+        setUsersState(users)
+    }
+
+    const renderElement = (key, value) => {
+        switch(key){
+            case 'avatar':
+                return <img src={value || avatar}/>
+            default: 
+                return <span>{value}</span>
+        }
+    }
+
+    const sliderBody = useMemo(() => {
+        if(users.length === 1){
+            const user = users[0]
+            return <div>
+                {Object.keys(user).map(key => <div key={`selected_user_${key}`}>
+                    {key}: {renderElement(key, user[key])}
+                </div>)}
+            </div>
+        }
+        else if(users.length > 1) { // ~n === -(n + 1)
+            return <div>
+                <div>{activeChat.name}</div>
+                {[me, ...users].map(user => <div>
+                    <img src={user.avatar}/>
+                    <span>{user.name}</span>
+                </div>)}
+            </div>
+        }
+    }, [users, activeChat])
+
     return <>
         <Aside/>
         <Chat/>
         <SliderPanel isHidden={hiddePanel} 
-                     hidePanel={() => dispatch(setSelectedUserId(-1))}>
-            {user && <div>
-                {Object.keys(user).map(key => <div key={`selected_user_${key}`}>
-                    {key}: {user[key]}
-                </div>)}
-            </div>}
+                     onClosed={() => dispatch(setSelectedUsersIds([]))}
+                     hidePanel={() => setHiddePanel(true)}>
+            {sliderBody}
         </SliderPanel>
     </>
 }

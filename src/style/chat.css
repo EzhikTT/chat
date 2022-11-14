@@ -7,6 +7,16 @@ section.chat > div.messages {
     flex-direction: column-reverse;
     height: calc(100% - 50px - 55px);
 }
+section.chat > div.messages > div {
+    display: flex;
+    margin-bottom: 10px;
+}
 section.chat > div.messages > div.my {
     margin-left: auto;
+}
+section.chat > div.messages > div > img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 50%;
 }

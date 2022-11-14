@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     page: 'personal',
     user: {
-        name: 'Petr petrov',
-        avatar: 'some image',
+        name: 'Petr Sidorov',
+        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDasghjtk-pOLLAI5roseGiDl0Qn0E_oBgeg&usqp=CAU',
         login: 'petr_228',
         birthday: '11.10.2000'
     }

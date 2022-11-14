@@ -1,11 +1,14 @@
 import React from "react";
-
+import { useDispatch } from "react-redux";
+import { setChatById } from "../../store/messanger";
 import blank from '../../assets/avatar.png'
 
 import '../../style/polilog.css'
 
 const Polilog = ({title, message, count, time, logo, chatId}) => {
-    return <div className='polilog'>
+    const dispatch = useDispatch()
+
+    return <div className='polilogue' onClick={() => dispatch(setChatById(chatId))}>
         <img src={logo || blank}/>
         <div>
             <div>{title}</div>

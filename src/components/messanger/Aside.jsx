@@ -23,7 +23,16 @@ const Aside = () => {
 
     const polilogs = useMemo(() => {
         const polichats = chats.filter(({usersIds}) => usersIds)
-        return polichats.map((chat, id) => <Polilog title={chat.name} message={''}></Polilog>)
+        return polichats.map((chat, id) => {
+            const lastMessage = chat.messages[chat.messages.length - 1] 
+            return <Polilog title={chat.name} 
+                message={lastMessage.message} 
+                time={lastMessage.time} 
+                chatId={chat.chatId} 
+                logo={chat.logo} 
+                key={`polilogue_${id}`}/>
+            }
+        )
     }, [chats])
 
     return <aside>

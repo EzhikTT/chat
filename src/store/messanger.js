@@ -5,7 +5,7 @@ const initialState = {
     chats: [],
     chat: {},
     users: [],
-    selectedUserId: -1
+    selectedUserIds: []
 }
 
 const messangerSlice = createSlice({
@@ -22,6 +22,18 @@ const messangerSlice = createSlice({
             if(userId > 0){
                 for(let i of state.chats){
                     if(i.userId === userId){
+                        state.chat = i
+                    }
+                }
+            }
+            else {
+                state.chat = {}
+            }
+        },
+        setChatById: (state, {payload: chatId}) => {
+            if(chatId > 0){
+                for(let i of state.chats){
+                    if(i.chatId === chatId){
                         state.chat = i
                     }
                 }
@@ -56,11 +68,11 @@ const messangerSlice = createSlice({
                 }
             }
         },
-        setSelectedUserId(state, {payload: id}){
-            state.selectedUserId = id
+        setSelectedUsersIds(state, {payload: ids}){
+            state.selectedUserIds = ids
         }
     }
 })
 
-export const {setSelectedUserId, setMessages, addMessage, setChatByUser, setChats, setUsers, sendMessage} = messangerSlice.actions
+export const {setChatById, setSelectedUsersIds, setMessages, addMessage, setChatByUser, setChats, setUsers, sendMessage} = messangerSlice.actions
 export default messangerSlice.reducer

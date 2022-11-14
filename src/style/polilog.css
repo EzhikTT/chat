@@ -1,4 +1,4 @@
-div.polilog {
+div.polilogue {
     padding: 16px 8px;
     display: flex;
     align-items: center;
@@ -7,21 +7,21 @@ div.polilog {
     border-bottom: 1px solid black;
 }
 
-div.polilog > img {
+div.polilogue > img {
     width: 40px;
     height: 40px;
 }
 
-div.polilog > div {
+div.polilogue > div {
     margin-left: 8px;
 }
 
-div.polilog > div > div:first-child {
+div.polilogue > div > div:first-child {
     font-size: 1.2rem;
     font-weight: bold;
 }
 
-div.polilog > span.count {
+div.polilogue > span.count {
     background-color: green;
     border-radius: 50%;
     width: 1.4rem;
@@ -34,7 +34,7 @@ div.polilog > span.count {
     bottom: 8px;
 }
 
-div.polilog > span.time {
+div.polilogue > span.time {
     position: absolute;
     right: 8px;
     top: 8px;

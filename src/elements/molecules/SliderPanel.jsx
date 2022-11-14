@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import '../../style/molecules/SliderPanel.css'
 
-const SliderPanel = ({children, isHidden = true, hidePanel, speed = 10}) => {
+const SliderPanel = ({children, isHidden = true, hidePanel, speed = 1, onClosed = () => {}}) => {
 
     const [translate, setTranslate] = useState(101)
     const [interval, setIntervelState] = useState(null)  
@@ -33,6 +33,9 @@ const SliderPanel = ({children, isHidden = true, hidePanel, speed = 10}) => {
         else {
             clearTimeout(interval)
             setIntervelState(null)
+        }
+        if(translate === 101){
+            onClosed()
         }
     }, [translate])
 
