@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState} from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -9,8 +9,11 @@ import Dialogue from './Dialogue.jsx'
 import Polilog from './Polilog.jsx'
 
 const Aside = () => {
+    const [search, setSearch] = useState('')
+
     const users = useSelector(({messanger}) => messanger.users)
     const chats = useSelector(({messanger}) => messanger.chats)
+    const token = useSelector(({main}) => main.token)
 
     const getMessagesForUser = (userId) => {
         for(let i of chats){
@@ -35,6 +38,19 @@ const Aside = () => {
         )
     }, [chats])
 
+    const onChangeSearch = async ({target: {value}}) => {
+        setSearch(value)
+        if(value.length > 2){
+            const raw = await fetch(`http://localhost:8888/users?search=${value}`, {
+                headers: {
+                    'authorization': token
+                }
+            })
+            const data = await raw.json()
+            console.log(data)
+        }
+    }
+
     return <aside>
         <Header>
             <Link to="/settings">
@@ -42,6 +58,11 @@ const Aside = () => {
             </Link>
         </Header>
         <section>
+            <br/>
+            <input value={search} onChange={event => onChangeSearch(event)}/>
+            <br/>
+
+
             {users.map(
                 (user, id) => {
                     const lastMessage = getMessagesForUser(user.id)[0]

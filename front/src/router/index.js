@@ -9,6 +9,10 @@ const router = createBrowserRouter([
         path: '/',
         element: <Main/>
     },
+{
+    path: '/messanger',
+        element: <Messanger/>
+},
     {
         path: '/settings',
         element: <Settings/>

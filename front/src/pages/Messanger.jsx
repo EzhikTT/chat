@@ -12,6 +12,8 @@ import { addMessage, setChats, setMessages, setSelectedUsersIds, setUsers } from
 // import '../style/messanger.css'
 
 const Messanger = () => {
+    const token = useSelector(({main}) => main.token)
+
     const arMessages = [
         {
             userName: 'user name',
@@ -110,12 +112,21 @@ const Messanger = () => {
 
     const getData = async () => {
         try{
-            const res = await fetch('http://localhost:8888/test') // fetch().then()
+            const res = await fetch('http://localhost:8888/chat') // fetch().then()
             const {users: usersData, chats} = await res.json() // fetch().then().then()
             
             const users = await Promise.all(
                 usersData.map(async (user) => {
-                    const res = await fetch(`http://localhost:8888/users/${user.id}`) // fetch().then()
+                    const res = await fetch(`http://localhost:8888/users`, {
+                        method: 'post',
+                        headers: {
+                            'Authorization': token
+                        },
+                        body: JSON.stringify({
+                            id: user.id,
+                            token
+                        })
+                    }) // fetch().then()
                     return await res.json()
                 })
             )

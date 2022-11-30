@@ -18,10 +18,10 @@ const config = {
     devServer: {
         open: true,
         host: 'localhost',
-        onBeforeSetupMiddleware: devServer => webpackMockServer.use(devServer.app, {
-            port: 8888,
-            entry: ['webpack.mock.ts']
-        }),
+        // onBeforeSetupMiddleware: devServer => webpackMockServer.use(devServer.app, {
+        //     port: 8888,
+        //     entry: ['webpack.mock.ts']
+        // }),
     },
     devtool: 'source-map',
     plugins: [
