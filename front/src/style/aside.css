@@ -1,0 +1,43 @@
+aside > header {
+    padding: 16px 8px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: relative;
+
+    border-bottom: 1px solid black;
+}
+
+aside > header > img {
+    width: 60px;
+    height: 60px;
+}
+
+aside > header > div {
+    margin-left: 8px;
+    font-size: 1.5rem;
+}
+
+aside > section {
+    height: calc(100% - 92px);
+    overflow: scroll;
+}
+
+aside > header:hover svg.settings {
+    display: block;
+}
+
+aside > header svg.settings,
+aside > header svg.back 
+{
+    display: none;
+    width: 30px;
+    height: 30px;
+    opacity: 0.5;
+    position: absolute;
+    right: 8px;
+    bottom: calc(50% - 15px);
+}
+aside > header svg.back {
+    display: block;
+}

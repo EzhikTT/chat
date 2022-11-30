@@ -1,0 +1,13 @@
+div.menu-item {
+    padding: 8px 16px;
+    text-transform: uppercase;
+}
+div.menu-item > a {
+    text-decoration: none;
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+}
+div.menu-item > a:hover {
+    text-decoration: underline;
+}

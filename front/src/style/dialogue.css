@@ -1,0 +1,43 @@
+div.dialogue {
+    padding: 16px 8px;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    border-bottom: 1px solid black;
+}
+
+div.dialogue > img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+div.dialogue > div {
+    margin-left: 8px;
+}
+
+div.dialogue > div > div:first-child {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+div.dialogue > span.count {
+    background-color: green;
+    border-radius: 50%;
+    width: 1.4rem;
+    height: 1.4rem;
+    text-align: center;
+    color: white;
+    font-size: 1.3rem;
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+}
+
+div.dialogue > span.time {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    opacity: 0.5;
+}

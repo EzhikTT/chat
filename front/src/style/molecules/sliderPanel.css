@@ -1,0 +1,19 @@
+aside.slider-panel {
+    position: absolute;
+    z-index: 999;
+    height: 100%;
+    width: 40%;
+    right: 0;
+
+    background-color: white;
+}
+
+div.back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.2);
+}

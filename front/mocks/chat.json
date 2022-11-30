@@ -1,0 +1,142 @@
+{
+    "chats": [
+        {
+            "usersIds": [
+                1, 3
+            ],
+            "name": "some poli chat",
+            "logo": "",
+            "chatId": 40,
+            "messages": [
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "userId": 1
+                },
+                {
+                    "message": "some message 1",
+                    "time": "14:88",
+                    "userId": 1
+                },
+                {
+                    "message": "some message 2",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message 3",
+                    "time": "14:88",
+                    "userId": 3
+                },
+                {
+                    "message": "some message 4",
+                    "time": "14:88",
+                    "userId": 3
+                }
+            ]
+        },
+        {
+            "userId": 1,
+            "chatId": 1,
+            "messages": [
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                }
+            ]
+        },
+        {
+            "userId": 2,
+            "chatId": 2,
+            "messages": [
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                }
+            ]
+        },
+        {
+            "userId": 3,
+            "chatId": 3,
+            "messages": [
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88",
+                    "isMy": true
+                },
+                {
+                    "message": "some message",
+                    "time": "14:88"
+                }
+            ]
+        }
+    ],
+    "users": [
+        {
+            "id": 1,
+            "name": "User Name 1",
+            "avatar": ""
+        },
+        {
+            "id": 2,
+            "name": "User Name 2",
+            "avatar": ""
+        },
+        {
+            "id": 3,
+            "name": "User Name 3",
+            "avatar": ""
+        }
+    ]
+}
