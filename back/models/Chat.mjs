@@ -2,26 +2,27 @@ import {promises as fs} from 'fs'
 import path from 'path'
 import Utils from '../lib/Utils.mjs'
 
-export default class MessagesModel{
-    static async add(message){
+export default class ChatModel {
+    static async add(chat) {
         try {
-            const dataPath = path.resolve(Utils.ROOT_PATH, `./data/messages.json`)
+            const dataPath = path.resolve(Utils.ROOT_PATH, `./data/chat.json`)
             const data = JSON.parse((await fs.readFile(dataPath)).toString())
-            data.push(message)
+            chat.id = data.length
+            data.push(chat)
             await fs.writeFile(dataPath, JSON.stringify(data))
-            return data.length - 1
+            return chat.id
         }
         catch(e){
             return -1
         }
     }
 
-    static async getAll(){
-        try{
-            const dataPath = path.resolve(Utils.ROOT_PATH, './data/messages.json')
+    static async getList() {
+        try {
+            const dataPath = path.resolve(Utils.ROOT_PATH, `./data/chat.json`)
             return (await fs.readFile(dataPath)).toString()
         }
-        catch(error){
+        catch(e) {
             return '[]'
         }
     }

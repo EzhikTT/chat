@@ -13,6 +13,20 @@ export default class UsersModel {
         }
     }
 
+    static async login(login, password) {
+        try {
+            const users = JSON.parse(await UsersModel.getAll())
+            for(let u of users){
+                if(u.login === login && u.password === password){
+                    return u
+                }
+            }
+        }
+        catch(error){
+        }
+        return {}
+    }
+
     static async getList(search){
         const users = JSON.parse(await UsersModel.getAll())
         const res = []

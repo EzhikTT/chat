@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SignIn from "../components/authorize/SignIn.jsx";
+import LogIn from "../components/authorize/LogIn.jsx";
 import { setToken } from '../store/main'
 
 const Main = () => {
@@ -53,7 +54,7 @@ const Main = () => {
     const [form, setForm] = useState('login')
 
     return <div>
-        {form === 'login' && <div></div>}
+        {form === 'login' && <LogIn/>}
         {form === 'signin' && <SignIn/>}
         <span onClick={() => setForm('login')}>log in</span> 
         <span onClick={() => setForm('signin')}>sign in</span>

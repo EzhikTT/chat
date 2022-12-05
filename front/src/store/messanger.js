@@ -19,9 +19,11 @@ const messangerSlice = createSlice({
             state.messages.push(message)
         },
         setChatByUser: (state, {payload: userId}) => {
-            if(userId > 0){
+            if(userId > 0 && state.chats){
+                // debugger
                 for(let i of state.chats){
-                    if(i.userId === userId){
+                    // debugger
+                    if(i.recepient === userId){
                         state.chat = i
                     }
                 }

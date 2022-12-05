@@ -1,7 +1,16 @@
 import MessagesModel from "../models/Messages.mjs"
 
 export default class MessageController {
+    static async getAll(req, res){
+        const data = await MessagesModel.getAll()
+        res.setHeader('Content-Type', 'application/json')
+        res.end(data)
+    }
+
     static async save(req, res, message) {
+        message.createDate = +(new Date())
+        message.author = req.params.currentUserId
+
         const data = await MessagesModel.add(message)
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify({id: data}))
