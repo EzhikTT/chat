@@ -9,7 +9,7 @@ export default class MessageController {
 
     static async delete(req, res, id) {
         res.setHeader('Content-Type', 'text/html')
-        req.end('<html><head></head><body><h2>test</h2></body></html>')
+        res.end('<html><head></head><body><h2>test</h2></body></html>')
     }
 
     static async update(req, res, id, data) {
