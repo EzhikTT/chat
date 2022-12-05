@@ -46,8 +46,10 @@ const Aside = () => {
                     'authorization': token
                 }
             })
-            const data = await raw.json()
-            console.log(data)
+            const usersData = await raw.json()
+
+
+            console.log(usersData)
         }
     }
 
