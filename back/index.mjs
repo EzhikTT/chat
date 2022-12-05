@@ -4,6 +4,7 @@ import UsersController from './controlles/Users.mjs'
 import path from 'path'
 import BaseController from './controlles/Base.mjs'
 import MessageController from './controlles/Message.mjs'
+import ChatController from './controlles/Chat.mjs'
 
 // console.log(path.dirname(import.meta.url))
 
@@ -34,6 +35,15 @@ const server = http.createServer(async (req, res) => {
                 else if(BaseController.get('/users/:id', req, res)){
                     await UsersController.getById(req, res, req.params.id)
                 }
+                else if(BaseController.get('/chats', req, res)){
+                    await ChatController.getAll(req, res)
+                }
+                else if(await BaseController.post('/chats', req, res)){
+                    await ChatController.save(req, res, req.body.userId)
+                }
+                else if(BaseController.get('/chats/message', req, res)){
+                    await MessageController.getAll(req, res)
+                }
                 else if(await BaseController.post('/chats/message', req, res)){
                     await MessageController.save(req, res, req.body)
                 }
@@ -52,6 +62,9 @@ const server = http.createServer(async (req, res) => {
             else {
                 if(await BaseController.post('/users', req, res)){
                     await UsersController.save(req, res, req.body)
+                }
+                else if(await BaseController.post('/login', req, res)){
+                    await UsersController.login(req, res, req.body)
                 }
                 else {
                     console.log('no auth')

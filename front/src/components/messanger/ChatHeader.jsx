@@ -12,14 +12,14 @@ const ChatHeader = () => {
 
     const getUser = () => {
         for(let i of users){
-            if(i.id === chat.userId){
+            if(i.id === chat.recepient){
                 return i
             }
         }
     }
 
     const getData = useCallback(() => {
-        if(chat.userId && ~chat.userId){
+        if(chat.recepient && ~chat.recepient){
             const res = getUser()
             return {
                 title: res.name || 'no name',

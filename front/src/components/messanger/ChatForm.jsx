@@ -1,16 +1,42 @@
 import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import {sendMessage as actionSendMessage} from '../../store/messanger.js'
+import { useDispatch, useSelector } from "react-redux"
+import {sendMessage as actionSendMessage, setMessages} from '../../store/messanger.js'
 import '../../style/chatFooter.css'
 
 const ChatForm = () => {
+    const chat = useSelector(({messanger}) => messanger.chat)
+    const token = useSelector(({main}) => main.token)
+
     const dispatch = useDispatch()
     const [text, setText] = useState('')
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if(text){
-            dispatch(actionSendMessage(text))
-            setText('')
+            const raw = await fetch('http://localhost:8888/chats/message', {
+                method: 'post',
+                headers: {
+                    'authorization': token
+                },
+                body: JSON.stringify({
+                    text,
+                    recepient: chat.recepient,
+                    chatId: chat.id
+                })
+            })
+            const data = await raw.json()
+
+            if(~data.id){
+                const raw = await fetch('http://localhost:8888/chats/message', {
+                    headers: {
+                        'authorization': token
+                    },
+                })
+                const data = await raw.json()
+                dispatch(setMessages(data))
+                setText('')
+            }
+
+            // dispatch(actionSendMessage(text))
         }
     }
 

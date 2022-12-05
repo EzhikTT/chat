@@ -5,11 +5,20 @@ import UsersModel from '../models/Users.mjs'
 import TokensModel from '../models/Tokens.mjs'
 
 export default class UsersController {
+
     static async getAll(req, res){
         const data = await UsersModel.getAll()
         res.setHeader('Content-Type', 'application/json')
         res.end(data)
     }
+
+    static async login(req, res, user){
+        const data = await UsersModel.login(user.login, user.password)
+        const token = await TokensModel.add(user.login, data.id)
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify({token}))
+    }
+
     static async getById(req, res, id){
         const data = await UsersModel.getById(id)
         res.setHeader('Content-Type', 'application/json')
@@ -34,4 +43,5 @@ export default class UsersController {
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify(data))
     }
+
 }

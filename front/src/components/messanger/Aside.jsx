@@ -1,8 +1,10 @@
 import React, { useMemo, useState} from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import avatar from '../../assets/avatar.png'
+import { setChatById, setChats, setUsers, setChatByUser } from '../../store/messanger'
 import '../../style/aside.css'
 import Header from '../Header.jsx'
 import Dialogue from './Dialogue.jsx'
@@ -10,10 +12,14 @@ import Polilog from './Polilog.jsx'
 
 const Aside = () => {
     const [search, setSearch] = useState('')
+    const [searchedUsers, setSearchedUsers] = useState([])
+    const [mapUsers, setMapUsers] = useState({})
 
     const users = useSelector(({messanger}) => messanger.users)
     const chats = useSelector(({messanger}) => messanger.chats)
     const token = useSelector(({main}) => main.token)
+
+    const dispatch = useDispatch()
 
     const getMessagesForUser = (userId) => {
         for(let i of chats){
@@ -22,7 +28,29 @@ const Aside = () => {
             }
         }
         return []
-    }   
+    }  
+    
+    useEffect(() => {
+        const obj = {}
+        for(let u of users){
+            obj[u.id] = {...u}
+        }
+        setMapUsers({...obj})
+    }, [users])
+
+    const dialogs = useMemo(() => {
+        return chats.map((chat, id) => {
+            const user = mapUsers[chat.recepient]
+            return <Dialogue userName={user.name} 
+                message={''}
+                count={''}
+                time={''}
+                avatar={user.avatar}
+                key={`dialogue_${id}`}
+                userId={user.id}/>
+            }
+        )
+    }, [mapUsers, chats])
 
     const polilogs = useMemo(() => {
         const polichats = chats.filter(({usersIds}) => usersIds)
@@ -48,9 +76,53 @@ const Aside = () => {
             })
             const usersData = await raw.json()
 
-
-            console.log(usersData)
+            setSearchedUsers([...usersData])
+            // console.log(usersData)
         }
+    }
+
+    const createChat = async (userId) => {
+        const raw = await fetch('http://localhost:8888/chats', {
+            method: 'post',
+            headers: {
+                'authorization': token
+            },
+            body: JSON.stringify({
+                userId
+            })
+        })
+        const res = await raw.json()
+
+        if(~res.id){ // -1 * (n + 1)
+            setSearch('')
+            setSearchedUsers([])
+
+            const raw = await fetch('http://localhost:8888/chats', {
+                headers: {
+                    'authorization': token
+                },
+            })
+
+            const [rawChats, rawUsers] = await Promise.all([
+                fetch('http://localhost:8888/chats', {
+                    headers: {
+                        'authorization': token
+                    },
+                }),
+                fetch('http://localhost:8888/users', {
+                    headers: {
+                        'authorization': token
+                    },
+                })
+            ])
+
+            // const res = await raw.json()
+            dispatch(setUsers(await rawUsers.json()))
+            dispatch(setChats(await rawChats.json()))
+            dispatch(setChatByUser(userId))
+        }
+
+        console.log(res)
     }
 
     return <aside>
@@ -63,22 +135,14 @@ const Aside = () => {
             <br/>
             <input value={search} onChange={event => onChangeSearch(event)}/>
             <br/>
+            {
+                searchedUsers.map((user, i) => 
+                    <div onClick={() => createChat(user.id)} key={`search_user_${i}`}>
+                        {user.login} - {user.name}
+                    </div>)
+            }
 
-
-            {users.map(
-                (user, id) => {
-                    const lastMessage = getMessagesForUser(user.id)[0]
-                    // debugger
-                    return <Dialogue userName={user.name} 
-                                    message={lastMessage ? lastMessage.message : ''}
-                                    count={''}
-                                    time={lastMessage ? lastMessage.time : ''}
-                                    avatar={user.avatar}
-                                    key={`dialogue_${id}`}
-                                    userId={user.id}/>
-                    })
-                }
-                {polilogs}
+            {[...dialogs, ...polilogs]}
         </section>
     </aside>
 }
