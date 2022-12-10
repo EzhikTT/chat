@@ -26,4 +26,25 @@ export default class ChatModel {
             return '[]'
         }
     }
+
+    static async findDialogIdByUsers(...ids){
+        try{
+            const data = JSON.parse(await ChatModel.getList())
+            // author recepient
+            console.log(ids, data)
+            for(let chat of data){
+                console.log(ids, chat)
+
+                if(
+                    chat.author === ids[0] && chat.recepient === ids[1] || 
+                    chat.author === ids[1] && chat.recepient === ids[0]
+                ){
+                    return chat.id
+                }
+            }
+        }
+        catch(e){
+        }
+        return -1
+    }
 }

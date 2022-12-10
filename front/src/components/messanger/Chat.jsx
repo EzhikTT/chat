@@ -8,6 +8,7 @@ import avatar from '../../assets/avatar.png'
 import { setSelectedUsersIds } from '../../store/messanger.js'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { ws } from '../../index.js'
 
 const Chat = () => {
     const data = useSelector(({messanger}) => messanger.chat) 
@@ -17,6 +18,12 @@ const Chat = () => {
     const [messages, setMessages] = useState([])
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        ws.addEventListener('message', ev => {
+            console.log('message', ev)
+        })
+    }, [])
 
     useEffect(() => {
         const ar = []

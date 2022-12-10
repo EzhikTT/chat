@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Aside from '../components/messanger/Aside.jsx'
 import Chat from '../components/messanger/Chat.jsx'
 import SliderPanel from '../elements/molecules/SliderPanel.jsx'
+import { ws } from '../index.js'
 import { addMessage, setChats, setMessages, setSelectedUsersIds, setUsers } from '../store/messanger.js'
 
 // import data from '../mocks/chat.json'
@@ -50,6 +51,11 @@ const Messanger = () => {
         // fetchData()
 
         getData()
+
+        if(token) {
+            ws.send(JSON.stringify({token}))
+        }
+
     }, [])
 
 
@@ -112,27 +118,45 @@ const Messanger = () => {
 
     const getData = async () => {
         try{
-            const res = await fetch('http://localhost:8888/chat') // fetch().then()
-            const {users: usersData, chats} = await res.json() // fetch().then().then()
+            // const res = await fetch('http://localhost:8888/chats', {
+                // headers: {
+                            // 'Authorization': token
+                        // },
+            // }) // fetch().then()
+            // const {users: usersData, chats} = await res.json() // fetch().then().then()
             
-            const users = await Promise.all(
-                usersData.map(async (user) => {
-                    const res = await fetch(`http://localhost:8888/users`, {
-                        method: 'post',
-                        headers: {
-                            'Authorization': token
-                        },
-                        body: JSON.stringify({
-                            id: user.id,
-                            token
-                        })
-                    }) // fetch().then()
-                    return await res.json()
-                })
-            )
+            // const users = await Promise.all(
+            //     usersData.map(async (user) => {
+            //         const res = await fetch(`http://localhost:8888/users`, {
+            //             method: 'post',
+            //             headers: {
+            //                 'Authorization': token
+            //             },
+            //             body: JSON.stringify({
+            //                 id: user.id,
+            //                 token
+            //             })
+            //         }) // fetch().then()
+            //         return await res.json()
+            //     })
+            // )
 
-            dispatch(setUsers(users))
-            dispatch(setChats(chats))
+            const [rawChats, rawUsers] = await Promise.all([
+                fetch('http://localhost:8888/chats', {
+                    headers: {
+                        'authorization': token
+                    },
+                }),
+                fetch('http://localhost:8888/users', {
+                    headers: {
+                        'authorization': token
+                    },
+                })
+            ])
+
+            // const res = await raw.json()
+            dispatch(setUsers(await rawUsers.json()))
+            dispatch(setChats(await rawChats.json()))
         }
         catch(p){ // error
             console.log(p)

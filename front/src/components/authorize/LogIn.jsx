@@ -2,10 +2,11 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToken } from '../../store/main'
+import { setUser } from "../../store/settings";
 import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
-    
+
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
 
@@ -24,6 +25,13 @@ const LogIn = () => {
         console.log('login', data)
         if(data.token) {
             dispatch(setToken(data.token))
+            const raw = await fetch('http://localhost:8888/users/self', {
+                headers: {
+                    'authorization': data.token
+                }
+            })
+            const user = await raw.json()
+            dispatch(setUser(user))
             navigate('/messanger')
         }
         else {
