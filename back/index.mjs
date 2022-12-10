@@ -1,10 +1,10 @@
-import fs from 'fs'
 import http from 'http'
+import {WebSocketServer} from 'ws'
 import UsersController from './controlles/Users.mjs'
-import path from 'path'
 import BaseController from './controlles/Base.mjs'
 import MessageController from './controlles/Message.mjs'
 import ChatController from './controlles/Chat.mjs'
+import TokensModel from './models/Tokens.mjs'
 
 // console.log(path.dirname(import.meta.url))
 
@@ -31,6 +31,9 @@ const server = http.createServer(async (req, res) => {
                     else {
                         await UsersController.getAll(req, res)  
                     }
+                }
+                else if(BaseController.get('/users/self', req, res)){
+                    await UsersController.getSelfInfo(req, res)
                 }
                 else if(BaseController.get('/users/:id', req, res)){
                     await UsersController.getById(req, res, req.params.id)
@@ -80,4 +83,44 @@ const server = http.createServer(async (req, res) => {
         }
     }
 })
+
+
+const WebSockerServer = new WebSocketServer({server})
+
+export const clients = {}
+
+WebSockerServer.on('connection', ws => {
+    // console.log(i++, ws)
+    ws.on('open', m => {
+        console.log('open', m)
+    })
+    ws.on('message', async m => {
+        console.log('message', m.toString())
+
+        const {token, action} = JSON.parse(m.toString())
+
+        if(token){
+            const userId = await TokensModel.getUserIdByToken(token)
+            if(userId){
+                clients[userId] = ws
+            }
+        }
+
+        if(action){
+            const {user, message} = action
+
+            if(user && message && clients[user]){
+                clients[user].send(message)
+            }
+        }
+
+    })
+    ws.on('close', m => {
+        console.log('close', m)
+    })
+    ws.on('error', m => {
+        console.log('close', m)
+    })
+})
+
 server.listen(8888)

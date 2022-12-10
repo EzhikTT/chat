@@ -77,10 +77,11 @@ export default class BaseController {
     }
 
     static async checkAuthorize(req, res){
+        // console.log(req.headers)
         const token = req.headers['authorization']
-        console.log('token', token)
+        // console.log('token', token)
         const userId = await TokensModel.getUserIdByToken(token)
-        console.log('userId', userId)
+        // console.log('userId', userId)
         if(userId){
             req.params = {...req.params, currentUserId:  userId}
             return true

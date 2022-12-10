@@ -21,6 +21,16 @@ const App = () => {
     //     })
     // }, [])
 
+    // useEffect(() => {
+    //     const ws = new WebSocket('ws://localhost:8888')
+    //     ws.addEventListener('open', ev => {
+    //         console.log('onopen', ev)
+    //         ws.send('some message')
+
+    //     })
+    // }, [])
+
+
 
     return <main>
         {/* <div>App</div> */}

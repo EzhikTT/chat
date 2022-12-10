@@ -44,4 +44,8 @@ export default class UsersController {
         res.end(JSON.stringify(data))
     }
 
+    static async getSelfInfo(req, res){
+        console.log('getSelfInfo', req.params.currentUserId)
+        await UsersController.getById(req, res, req.params.currentUserId)
+    }
 }

@@ -29,6 +29,7 @@ export default class TokensModel {
             const data = JSON.parse(await fs.readFile(dataPath))
             const now = +(new Date())
             for(let t of data) {
+                console.log(t, now, now < t.expires)
                 if(t.token === token && now < t.expires) {
                     return t.user
                 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { ws } from "../../index.js"
 import {sendMessage as actionSendMessage, setMessages} from '../../store/messanger.js'
 import '../../style/chatFooter.css'
 
@@ -35,6 +36,8 @@ const ChatForm = () => {
                 dispatch(setMessages(data))
                 setText('')
             }
+
+            ws.send(JSON.stringify({action: {user: chat.recepient, message: text}}))
 
             // dispatch(actionSendMessage(text))
         }

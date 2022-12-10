@@ -7,12 +7,14 @@ import '../../style/chatHeader.css'
 const ChatHeader = () => {
     const chat = useSelector(({messanger}) => messanger.chat)
     const users = useSelector(({messanger}) => messanger.users)
+    const I = useSelector(({settings}) => settings.user)
 
     const dispatch = useDispatch()
 
     const getUser = () => {
+        const key = chat.recepient === I.id ? 'author' : 'recepient'
         for(let i of users){
-            if(i.id === chat.recepient){
+            if(i.id === chat[key]){
                 return i
             }
         }
