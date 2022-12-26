@@ -99,17 +99,17 @@ WebSockerServer.on('connection', ws => {
 
         const {token, action} = JSON.parse(m.toString())
 
-        if(token){
+        if(token) {
             const userId = await TokensModel.getUserIdByToken(token)
-            if(userId){
+            if(userId) {
                 clients[userId] = ws
             }
         }
 
-        if(action){
+        if(action) {
             const {user, message} = action
 
-            if(user && message && clients[user]){
+            if(user && message && clients[user]) {
                 clients[user].send(message)
             }
         }

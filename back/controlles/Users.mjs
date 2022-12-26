@@ -12,20 +12,20 @@ export default class UsersController {
         res.end(data)
     }
 
-    static async login(req, res, user){
+    static async login(req, res, user) {
         const data = await UsersModel.login(user.login, user.password)
         const token = await TokensModel.add(user.login, data.id)
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify({token}))
     }
 
-    static async getById(req, res, id){
+    static async getById(req, res, id) {
         const data = await UsersModel.getById(id)
         res.setHeader('Content-Type', 'application/json')
         res.end(data)
     }
 
-    static async save(req, res, user){
+    static async save(req, res, user) {
         const userId = await UsersModel.add(user)
         const token = await TokensModel.add(user.login, userId)
         res.setHeader('Content-Type', 'application/json')

@@ -2,6 +2,8 @@ import {promises as fs} from 'fs'
 import path from 'path'
 import Utils from '../lib/Utils.mjs'
 
+import db from './Db.mjs'
+
 export default class UsersModel {
     static async getAll(){
         try{
@@ -59,12 +61,16 @@ export default class UsersModel {
 
     static async add(user){
         try {
-            const data = JSON.parse(await UsersModel.getAll())
-            const newId = data.length + 1
-            data.push({...user, id: newId})
-            const dataPath = path.resolve(Utils.ROOT_PATH, './data/users.json')
-            await fs.writeFile(dataPath, JSON.stringify(data))
-            return newId
+            const res = await db.users().insertOne(user)
+            return res.insertedId.toString()
+
+
+            // const data = JSON.parse(await UsersModel.getAll())
+            // const newId = data.length + 1
+            // data.push({...user, id: newId})
+            // const dataPath = path.resolve(Utils.ROOT_PATH, './data/users.json')
+            // await fs.writeFile(dataPath, JSON.stringify(data))
+            // return newId
         }
         catch(e) {
             return -1

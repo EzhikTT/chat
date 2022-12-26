@@ -11,7 +11,7 @@ export default class ChatController {
 
         const chatId = await ChatModel.findDialogIdByUsers(req.params.currentUserId, userId)
 
-console.log(chatId)
+        console.log(chatId)
 
         if(~chatId){
             res.setHeader('Content-Type', 'application/json')
