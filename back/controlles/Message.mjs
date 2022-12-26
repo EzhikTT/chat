@@ -1,10 +1,11 @@
+import db from "../models/Db.mjs"
 import MessagesModel from "../models/Messages.mjs"
 
 export default class MessageController {
-    static async getAll(req, res){
+    static async getAll(req, res) {
         const data = await MessagesModel.getAll()
         res.setHeader('Content-Type', 'application/json')
-        res.end(data)
+        res.end(JSON.stringify(data))
     }
 
     static async save(req, res, message) {
@@ -17,8 +18,9 @@ export default class MessageController {
     }
 
     static async delete(req, res, id) {
+        const data = await MessagesModel.delete(id)
         res.setHeader('Content-Type', 'text/html')
-        res.end('<html><head></head><body><h2>test</h2></body></html>')
+        res.end(JSON.stringify({result: data}))
     }
 
     static async update(req, res, id, data) {
