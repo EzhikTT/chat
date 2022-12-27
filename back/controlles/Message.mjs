@@ -8,6 +8,12 @@ export default class MessageController {
         res.end(JSON.stringify(data))
     }
 
+    static async getByChatId(req, res, chatId){
+        const data = await MessagesModel.getByChatId(chatId)
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify(data))
+    }
+
     static async save(req, res, message) {
         message.createDate = +(new Date())
         message.author = req.params.currentUserId

@@ -33,17 +33,17 @@ export default class BaseController {
 
     static setParams(req, path){
 
-        // console.log('set params', req)
+        // console.log('set params', req) // /some/very/long/path?p1=v1&p2=v2&p3=v3
         
-        const [curPath, getParams] = req.url.split('?')
+        const [curPath, getParams] = req.url.split('?') // [/some/very/long/path , p1=v1&p2=v2&p3=v3]
 
         const params = {}
 
         if(getParams){
-            const gparams = getParams.split('&')
+            const gparams = getParams.split('&') // [p1=v1 , p2=v2 , p3=v3]
             for(let i of gparams){
-                const [key, value] = i.split('=')
-                params[key] = value
+                const [key, value] = i.split('=')  // [p1 , v1]
+                params[key] = value  
             }
         }
         
@@ -53,17 +53,17 @@ export default class BaseController {
             return true
         }
 
-        const arPath = path.split('/')
-        const arUrl = curPath.split('/')
+        const arPath = path.split('/') // /some/:p1/long/:p2 => [some , :p1 , long , :p2]
+        const arUrl = curPath.split('/') // /some/very/long/path => [some , very , long , path]
 
         if(arPath.length !== arUrl.length){
             return false
         }
 
-        for(let i = 0; i < arPath.length; i++){
-            if(arPath[i] !== arUrl[i]){
-                if(arPath[i][0] === ':'){
-                    params[arPath[i].replace(':', '')] = arUrl[i]
+        for(let i = 0; i < arPath.length; i++){ // [some , :p1 , long , :p2]
+            if(arPath[i] !== arUrl[i]){ // :p1 !== very
+                if(arPath[i][0] === ':'){ // [:p1][0] === :
+                    params[arPath[i].replace(':', '')] = arUrl[i] // params[p1] = very
                 }
                 else {
                     return false
@@ -71,7 +71,7 @@ export default class BaseController {
             }
         }
 
-       
+        req.params = {...req.params, ...params}
 
         return true
     }

@@ -37,8 +37,21 @@ export default class MessagesModel {
             // return (await fs.readFile(dataPath)).toString()
         }
         catch(error) {
-            return '[]'
+            return []
         }
+    }
+
+    static async getByChatId(chatId){
+        try {
+            const curMessages = db.messages().find({chatId})
+            const res = await curMessages.toArray()
+            await curMessages.close()
+            return res
+        }
+        catch(e) {
+            console.log('error', e)
+        }
+        return []
     }
 
     static async delete(id) {

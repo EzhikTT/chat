@@ -6,8 +6,11 @@ import db from './Db.mjs'
 export default class TokensModel {
     static async add(login, userId) {
         try {
+
+            const str = (Math.random() + 1).toString(36).substring(2) + (Math.random() + 1).toString(36).substring(2)
+
             const token = {
-                token: login,
+                token: str,
                 user: userId,
                 expires: +(new Date()) + 30 * 24 * 60 * 60 * 1000 // timestamp -> кол-во мс с 01.01.1970
             }
@@ -29,15 +32,21 @@ export default class TokensModel {
 
     static async getUserIdByToken(token) {
         try {
-            const dataPath = path.resolve(Utils.ROOT_PATH, './data/tokens.json')
-            const data = JSON.parse(await fs.readFile(dataPath))
-            const now = +(new Date())
-            for(let t of data) {
-                console.log(t, now, now < t.expires)
-                if(t.token === token && now < t.expires) {
-                    return t.user
-                }
+            const data = await db.tokens().findOne({token, expires: {$gt: +(new Date())}})
+
+            if(data){
+                return data.user
             }
+
+            // const dataPath = path.resolve(Utils.ROOT_PATH, './data/tokens.json')
+            // const data = JSON.parse(await fs.readFile(dataPath))
+            // const now = +(new Date())
+            // for(let t of data) {
+            //     console.log(t, now, now < t.expires)
+            //     if(t.token === token && now < t.expires) {
+            //         return t.user
+            //     }
+            // }
         }
         catch(e) {
             console.log('error', e)
