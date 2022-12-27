@@ -1,7 +1,8 @@
 import {promises as fs} from 'fs' 
 import path from 'path'
-import Utils from '../lib/Utils.mjs'
+import {genSalt, hash} from 'bcrypt'
 
+import Utils from '../lib/Utils.mjs'
 import db from './Db.mjs'
 
 export default class UsersModel {
@@ -17,10 +18,16 @@ export default class UsersModel {
 
     static async login(login, password) {
         try {
-            const users = JSON.parse(await UsersModel.getAll())
-            for(let u of users){
-                if(u.login === login && u.password === password){
-                    return u
+            const user = await db.users().findOne({login})
+            if(user){
+                const hashPassword = await hash(password, user.salt)
+                if(hashPassword === user.password){
+                    return {
+                        login: user.login,
+                        name: user.name,
+                        id: user._id,
+                        email: user.email
+                    }
                 }
             }
         }
@@ -61,9 +68,22 @@ export default class UsersModel {
 
     static async add(user){
         try {
+            /*
+            
+                login "admin1"
+                password "admin1"
+                email "sda@sad.d"
+                name "admin 12"
+          
+            */
+            const salt = await genSalt(16)
+            const hashPassword = await hash(user.password, salt)
+            
+            user.salt = salt
+            user.password = hashPassword
+
             const res = await db.users().insertOne(user)
             return res.insertedId.toString()
-
 
             // const data = JSON.parse(await UsersModel.getAll())
             // const newId = data.length + 1
