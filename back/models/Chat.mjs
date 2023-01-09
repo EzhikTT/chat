@@ -22,10 +22,20 @@ export default class ChatModel {
         }
     }
 
-    static async getList() {
+    static async getList(userId) {
         try {
-            const dataPath = path.resolve(Utils.ROOT_PATH, `./data/chat.json`)
-            return (await fs.readFile(dataPath)).toString()
+            const curr = db.chats().find({
+                $or: [
+                    {author: userId},
+                    {recepient: userId}
+                ]
+            })
+            const res = await curr.toArray()
+            await curr.close()
+            return JSON.stringify(res)
+
+            // const dataPath = path.resolve(Utils.ROOT_PATH, `./data/chat.json`)
+            // return (await fs.readFile(dataPath)).toString()
         }
         catch(e) {
             return '[]'

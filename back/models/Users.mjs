@@ -8,8 +8,13 @@ import db from './Db.mjs'
 export default class UsersModel {
     static async getAll(){
         try{
-            const dataPath = path.resolve(Utils.ROOT_PATH, './data/users.json')
-            return (await fs.readFile(dataPath)).toString()
+            const curr = db.users().find().project({_id: 1, login: 1, name: 1})
+            const res = await curr.toArray()
+            await curr.close()
+            return JSON.stringify(res)
+
+            // const dataPath = path.resolve(Utils.ROOT_PATH, './data/users.json')
+            // return (await fs.readFile(dataPath)).toString()
         }
         catch(error){
             return '[]'
@@ -37,25 +42,44 @@ export default class UsersModel {
     }
 
     static async getList(search){
-        const users = JSON.parse(await UsersModel.getAll())
-        const res = []
-        console.log(users)
-        for(let u of users){
-            if(u.login.includes(search) || u.name.includes(search) || u.email.includes(search)){
-                res.push(u)
-            }
-        }
+
+        const like = new RegExp(`${search}`)
+
+        const curr = db.users().find({
+            $or: [
+                {login: like},
+                {name: like},
+                {email: like}
+            ]
+        }).project({_id: 1, login: 1, name: 1})
+        const res = await curr.toArray()
+        await curr.close()
         return res
+
+        // const users = JSON.parse(await UsersModel.getAll())
+        // const res = []
+        // console.log(users)
+        // for(let u of users){
+        //     if(u.login.includes(search) || u.name.includes(search) || u.email.includes(search)){
+        //         res.push(u)
+        //     }
+        // }
+        // return res
     }
 
     static async getById(id){
         try{
-            const data = JSON.parse(await UsersModel.getAll())
-            for(let user of data){
-                if(user.id === id){
-                    return JSON.stringify(user)
-                }
-            }
+            const data = await db.users().findOne({_id: id}, {projection: {email: 1, login: 1, name: 1}})
+            // const data = await curr.next()
+            // await curr.close()
+            return JSON.stringify(data)
+
+            // const data = JSON.parse(await UsersModel.getAll())
+            // for(let user of data){
+                // if(user.id === id){
+                    // return JSON.stringify(user)
+                // }
+            // }
             // return '{}'
             // const dataPath = path.resolve(Utils.ROOT_PATH, `./data/users/${id}.json`)
             // return (await fs.readFile(dataPath)).toString()
