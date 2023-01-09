@@ -16,7 +16,7 @@ const server = http.createServer(async (req, res) => {
     res.setHeader('Access-Control-Request-Headers', "*")
     res.setHeader('Access-Control-Request-Method', "*")
 
-    if(req.method === 'OPTIONS'){
+    if(req.method === 'OPTIONS') {
         res.statusCode = 200
         res.end('')
     }

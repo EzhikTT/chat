@@ -18,6 +18,7 @@ const Aside = () => {
     const users = useSelector(({messanger}) => messanger.users)
     const chats = useSelector(({messanger}) => messanger.chats)
     const token = useSelector(({main}) => main.token)
+    const I = useSelector(({settings}) => settings.user)
 
     const dispatch = useDispatch()
 
@@ -33,21 +34,22 @@ const Aside = () => {
     useEffect(() => {
         const obj = {}
         for(let u of users){
-            obj[u.id] = {...u}
+            obj[u._id] = {...u}
         }
         setMapUsers({...obj})
     }, [users])
 
     const dialogs = useMemo(() => {
         return chats.map((chat, id) => {
-            const user = mapUsers[chat.recepient]
+            const key = chat.recepient === I._id ? 'author' : 'recepient'
+            const user = mapUsers[chat[key]]
             return <Dialogue userName={user.name} 
                 message={''}
                 count={''}
                 time={''}
                 avatar={user.avatar}
                 key={`dialogue_${id}`}
-                userId={user.id}/>
+                userId={user._id}/>
             }
         )
     }, [mapUsers, chats])
@@ -137,7 +139,7 @@ const Aside = () => {
             <br/>
             {
                 searchedUsers.map((user, i) => 
-                    <div onClick={() => createChat(user.id)} key={`search_user_${i}`}>
+                    <div onClick={() => createChat(user._id)} key={`search_user_${i}`}>
                         {user.login} - {user.name}
                     </div>)
             }

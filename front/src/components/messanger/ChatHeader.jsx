@@ -12,9 +12,10 @@ const ChatHeader = () => {
     const dispatch = useDispatch()
 
     const getUser = () => {
-        const key = chat.recepient === I.id ? 'author' : 'recepient'
+        debugger
+        const key = chat.recepient === I._id ? 'author' : 'recepient'
         for(let i of users){
-            if(i.id === chat[key]){
+            if(i._id === chat[key]){
                 return i
             }
         }

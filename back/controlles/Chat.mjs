@@ -1,8 +1,9 @@
+import { ObjectId } from "mongodb"
 import ChatModel from "../models/Chat.mjs"
 
 export default class ChatController {
     static async getAll(req, res){
-        const data = await ChatModel.getList()
+        const data = await ChatModel.getList(req.params.currentUserId)
         res.setHeader('Content-Type', 'application/json')
         res.end(data)
     }
@@ -20,7 +21,7 @@ export default class ChatController {
         else {
             const chat = {
                 author: req.params.currentUserId,
-                recepient: userId,
+                recepient: ObjectId(userId),
                 createDate: +(new Date()),
                 messages: []
             }
