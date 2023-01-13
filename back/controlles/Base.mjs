@@ -31,7 +31,7 @@ export default class BaseController {
         return false
     }
 
-    static setParams(req, path){
+    static setParams(req, path) {
 
         // console.log('set params', req) // /some/very/long/path?p1=v1&p2=v2&p3=v3
         
@@ -39,7 +39,7 @@ export default class BaseController {
 
         const params = {}
 
-        if(getParams){
+        if(getParams) {
             const gparams = getParams.split('&') // [p1=v1 , p2=v2 , p3=v3]
             for(let i of gparams){
                 const [key, value] = i.split('=')  // [p1 , v1]

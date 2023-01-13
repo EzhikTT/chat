@@ -5,34 +5,81 @@ import ChatHeader from './ChatHeader.jsx'
 import '../../style/chat.css'
 import Message from './Message.jsx'
 import avatar from '../../assets/avatar.png'
-import { setSelectedUsersIds } from '../../store/messanger.js'
+import { setSelectedUsersIds, setMessages as setMessagesToStore } from '../../store/messanger.js'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { ws } from '../../index.js'
+
 
 const Chat = () => {
     const data = useSelector(({messanger}) => messanger.chat) 
     const users = useSelector(({messanger}) => messanger.users)
     const mess = useSelector(({messanger}) => messanger.messages)
+    const token = useSelector(({main}) => main.token)
+    const I = useSelector(({settings}) => settings.user)
 
     const [messages, setMessages] = useState([])
+    const [isGetNewMessages, setIsGetNewMessages] = useState(false)
 
     const dispatch = useDispatch()
 
     useEffect(() => {
         ws.addEventListener('message', ev => {
             console.log('message', ev)
+            if(ev.data === 'NEW_MESSAGE'){
+                // if(data._id){
+                    // getMessages()
+                    setIsGetNewMessages(true)
+                // }
+            }
         })
+
+        // if(data._id){
+            getMessages()
+        // }
     }, [])
 
     useEffect(() => {
+        if(isGetNewMessages){
+            getMessages()
+            setIsGetNewMessages(false)
+        }
+    }, [isGetNewMessages])
+
+    const getMessages = async () => {
+        // debugger
+        if(data._id){
+            const raw = await fetch(
+                `http://localhost:8888/chats/${data._id}/message`, 
+                {
+                    headers: {
+                        'authorization': token
+                    },
+                }
+            )
+            const messes = await raw.json()
+            // debugger
+            dispatch(setMessagesToStore(messes))
+            // setMessages([...data].reverse())
+        }
+    }
+
+    useEffect(() => {
+        // if(data._id){
+            getMessages()
+        // }
+    }, [data])
+
+    useEffect(() => {
         const ar = []
+        // debugger
         for(let m of mess){
-            if(m.chatId === data.id){
+            if(m.chatId === data._id){
                 ar.push({...m})
             }
         }
         setMessages([...ar].reverse())
+        // debugger
     }, [mess, data, users])
 
     if(Object.keys(data).length === 0){
@@ -59,7 +106,7 @@ const Chat = () => {
                     return <Message key={`message_${id}`} 
                                     text={message.text} 
                                     time={message.createDate} 
-                                    isMy={false} 
+                                    isMy={message.author === I._id} 
                                     img={user.avatar || avatar}
                                     title={user.name || null}
                                     onClick={~user.id ? () => dispatch(setSelectedUsersIds([user.id])) : null}/>
