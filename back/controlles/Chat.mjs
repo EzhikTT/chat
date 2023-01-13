@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb"
 import ChatModel from "../models/Chat.mjs"
+import { clients } from "../index.mjs"
 
 export default class ChatController {
     static async getAll(req, res){
@@ -12,7 +13,7 @@ export default class ChatController {
 
         const chatId = await ChatModel.findDialogIdByUsers(req.params.currentUserId, userId)
 
-        console.log(chatId)
+        // console.log(chatId)
 
         if(~chatId){
             res.setHeader('Content-Type', 'application/json')
@@ -27,6 +28,13 @@ export default class ChatController {
             }
     
             const data = await ChatModel.add(chat)
+
+            if(data && clients[chat.recepient] && Array.isArray(clients[chat.recepient])){
+                for(let conn of clients[chat.recepient]){
+                    conn.send('NEW_CHAT')
+                }
+            }
+
             res.setHeader('Content-Type', 'application/json')
             res.end(JSON.stringify({id: data}))
         }

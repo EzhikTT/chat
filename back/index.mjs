@@ -87,7 +87,7 @@ const server = http.createServer(async (req, res) => {
 
 const WebSockerServer = new WebSocketServer({server})
 
-export const clients = {}
+export const clients = {} // [userId]: connection[]
 
 WebSockerServer.on('connection', ws => {
     // console.log(i++, ws)
@@ -95,31 +95,39 @@ WebSockerServer.on('connection', ws => {
         console.log('open', m)
     })
     ws.on('message', async m => {
-        console.log('message', m.toString())
+        // console.log('message', m.toString())
 
         const {token, action} = JSON.parse(m.toString())
 
         if(token) {
             const userId = await TokensModel.getUserIdByToken(token)
             if(userId) {
-                clients[userId] = ws
+                if(!clients[userId] || !Array.isArray(clients[userId])){
+                    clients[userId] = [ws]
+                }
+                else {
+                    clients[userId].push(ws)
+                }
             }
         }
 
-        if(action) {
-            const {user, message} = action
+        // if(action) {
+        //     const {user, message} = action
 
-            if(user && message && clients[user]) {
-                clients[user].send(message)
-            }
-        }
+        //     if(user && message && clients[user]) {
+        //         for(let conn of clients[user]){
+        //             conn.send(message)
+        //         }
+        //         // clients[user].send(message)
+        //     }
+        // }
 
     })
     ws.on('close', m => {
         console.log('close', m)
     })
     ws.on('error', m => {
-        console.log('close', m)
+        console.log('error', m)
     })
 })
 

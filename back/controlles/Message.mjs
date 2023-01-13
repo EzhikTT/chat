@@ -1,3 +1,4 @@
+import { clients } from "../index.mjs"
 import db from "../models/Db.mjs"
 import MessagesModel from "../models/Messages.mjs"
 
@@ -16,9 +17,16 @@ export default class MessageController {
 
     static async save(req, res, message) {
         message.createDate = +(new Date())
-        message.author = req.params.currentUserId
+        message.author = req.params.currentUserId.toString()
 
         const data = await MessagesModel.add(message)
+
+        if(data && clients[message.recepient] && Array.isArray(clients[message.recepient])){
+            for(let conn of clients[message.recepient]){
+                conn.send('NEW_MESSAGE')
+            }
+        }
+
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify({id: data}))
     }

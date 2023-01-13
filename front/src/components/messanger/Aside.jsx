@@ -9,11 +9,13 @@ import '../../style/aside.css'
 import Header from '../Header.jsx'
 import Dialogue from './Dialogue.jsx'
 import Polilog from './Polilog.jsx'
+import { ws } from '../../index.js'
 
 const Aside = () => {
     const [search, setSearch] = useState('')
     const [searchedUsers, setSearchedUsers] = useState([])
     const [mapUsers, setMapUsers] = useState({})
+    const [isGetNewChats, setIsGetNewChats] = useState(false)
 
     const users = useSelector(({messanger}) => messanger.users)
     const chats = useSelector(({messanger}) => messanger.chats)
@@ -31,6 +33,34 @@ const Aside = () => {
         return []
     }  
     
+    useEffect(() => {
+        ws.addEventListener('message', ev => {
+            console.log('message', ev)
+            if(ev.data === 'NEW_CHAT'){
+                // if(data._id){
+                    // getMessages()
+                    setIsGetNewChats(true)
+                // }
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        if(isGetNewChats){
+            getChats()
+            setIsGetNewChats(false)
+        }
+    }, [isGetNewChats])
+
+    const getChats = async () => {
+        const raw = await fetch('http://localhost:8888/chats', {
+            headers: {
+                'authorization': token
+            },
+        })
+        dispatch(setChats(await raw.json()))
+    }
+
     useEffect(() => {
         const obj = {}
         for(let u of users){
