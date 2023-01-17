@@ -7,11 +7,16 @@ const Message = ({text, time, isMy, img = null, title = null, onClick = null}) =
 
     const date = new DateTime(time)
 
+    const date = new DateTime(time)
+
+    const date = new DateTime(time)
+
     if(img && title && onClick) {
         return <div className={`${styles.message} ${!!isMy ? 'my' : ''}`}>
             <img src={img}/>
             <div className="content">
                 <span onClick={() => onClick()}>{title}</span><br/>
+                {text} - {date.format()}
                 {text} - {date.format()}
             </div>
         </div>

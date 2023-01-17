@@ -18,6 +18,7 @@ const Aside = () => {
     const [searchedUsers, setSearchedUsers] = useState([])
     const [mapUsers, setMapUsers] = useState({})
     const [isGetNewChats, setIsGetNewChats] = useState(false)
+    const [isGetNewChats, setIsGetNewChats] = useState(false)
 
     const users = useSelector(({messanger}) => messanger.users)
     const chats = useSelector(({messanger}) => messanger.chats)
@@ -34,6 +35,35 @@ const Aside = () => {
         }
         return []
     }  
+    
+    useEffect(() => {
+        ws.addEventListener('message', ev => {
+            console.log('message', ev)
+            if(ev.data === 'NEW_CHAT'){
+                // if(data._id){
+                    // getMessages()
+                    setIsGetNewChats(true)
+                // }
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        if(isGetNewChats){
+            getChats()
+            setIsGetNewChats(false)
+        }
+    }, [isGetNewChats])
+
+    const getChats = async () => {
+        const raw = await fetch('http://localhost:8888/chats', {
+            headers: {
+                'authorization': token
+            },
+        })
+        dispatch(setChats(await raw.json()))
+    }
+
     
     useEffect(() => {
         ws.addEventListener('message', ev => {
