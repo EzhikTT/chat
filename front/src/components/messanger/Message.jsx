@@ -13,6 +13,7 @@ const Message = ({text, time, isMy, img = null, title = null, onClick = null}) =
             <div className="content">
                 <span onClick={() => onClick()}>{title}</span><br/>
                 {text} - {date.format()}
+                {text} - {date.format()}
             </div>
         </div>
     }
