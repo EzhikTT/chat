@@ -76,7 +76,7 @@ export default class BaseController {
         return true
     }
 
-    static async checkAuthorize(req, res){
+    static async checkAuthorize(req, res) {
         // console.log(req.headers)
         const token = req.headers['authorization']
         // console.log('token', token)

@@ -1,0 +1,22 @@
+.wrapper {
+    display: flex;   
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%; // width = content
+    box-sizing: border-box; // width = content + border + padding
+
+    > .body {
+        width: 40%;
+
+        > .buttons {
+            margin-top: 5rem;
+            display: flex;
+            justify-content: space-around;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

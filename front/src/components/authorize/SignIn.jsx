@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setToken } from '../../store/main'
 
+import styles from './SignIn.module.scss'
+
 const SignIn = () => {
     const [login, setLogin] = useState('')
     const [pass, setPass] = useState('')
@@ -51,25 +53,25 @@ const SignIn = () => {
         setErrors([...err])
     }
 
-    return <form onSubmit={event => submit(event)}>
+    return <form onSubmit={event => submit(event)} className={styles.form}>
         {errors.length > 0 && errors.map((error, id) => <div key={`error_${id}`} style={{color: 'red'}}>{error}</div>)}
         <label>
             <span>name</span>
             <input name="name" onChange={(event) => setName(event.target.value)} required/>
-        </label><br/>
+        </label>
         <label>
             <span>login</span>
             <input name="login" onChange={(event) => setLogin(event.target.value)} required/>
-        </label><br/>
+        </label>
         <label>
             <span>email</span>
             <input name="email" type="email" onChange={(event) => setEmail(event.target.value)} required/>
-        </label><br/>
+        </label>
         <label>
             <span>password</span>
             <input name="password" type="password" onChange={(event) => setPass(event.target.value)} required/>
-        </label><br/>
-        <button>signin</button>
+        </label>
+        <button>sign in</button>
     </form>
 }
 

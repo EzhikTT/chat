@@ -7,6 +7,8 @@ import SignIn from "../components/authorize/SignIn.jsx";
 import LogIn from "../components/authorize/LogIn.jsx";
 import { setToken } from '../store/main'
 
+import styles from './Main.module.scss'
+
 const Main = () => {
     // const [login, setLogin] = useState('')
     // const [pass, setPass] = useState('')
@@ -53,11 +55,21 @@ const Main = () => {
 
     const [form, setForm] = useState('login')
 
-    return <div>
-        {form === 'login' && <LogIn/>}
-        {form === 'signin' && <SignIn/>}
-        <span onClick={() => setForm('login')}>log in</span> 
-        <span onClick={() => setForm('signin')}>sign in</span>
+    return <div className={styles.wrapper}>
+        <div className={styles.body}>
+            {/* <div> */}
+                {/* <video autoPlay controls src={video}> */}
+                {/* </video> */}
+            {/* </div> */}
+
+            {form === 'login' && <LogIn/>}
+            {form === 'signin' && <SignIn/>}
+
+            <div className={styles.buttons}>
+                <span onClick={() => setForm('login')}>log in</span> 
+                <span onClick={() => setForm('signin')}>sign in</span>
+            </div>
+        </div>
     </div>
 
     // return <form onSubmit={event => submit(event)}>

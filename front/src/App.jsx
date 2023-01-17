@@ -4,7 +4,7 @@ import {Provider as ReduxProvider} from 'react-redux'
 import store from './store'
 import router from './router'
 
-import './style/messanger.css'
+import './style/messanger.scss'
 import { useEffect } from 'react'
 
 

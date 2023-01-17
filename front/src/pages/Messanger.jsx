@@ -7,10 +7,14 @@ import Chat from '../components/messanger/Chat.jsx'
 import SliderPanel from '../elements/molecules/SliderPanel.jsx'
 import { ws } from '../index.js'
 import { addMessage, setChats, setMessages, setSelectedUsersIds, setUsers } from '../store/messanger.js'
+import { setToken } from '../store/main'
+import { setUser } from "../store/settings";
 
 // import data from '../mocks/chat.json'
 
 // import '../style/messanger.css'
+
+// import './Messanger.module.scss'
 
 const Messanger = () => {
     const token = useSelector(({main}) => main.token)
@@ -118,6 +122,28 @@ const Messanger = () => {
 
     const getData = async () => {
         try{
+
+            const raw = await fetch('http://localhost:8888/login', {
+                method: 'post',
+                body: JSON.stringify({
+                    login: 'newuser1', 
+                    password: 'newuser1'
+                })
+            })
+            const data = await raw.json()
+            // console.log('login', data)
+            if(data.token) {
+                dispatch(setToken(data.token))
+                const raw = await fetch('http://localhost:8888/users/self', {
+                    headers: {
+                        'authorization': data.token
+                    }
+                })
+                const user = await raw.json()
+                dispatch(setUser(user))
+                // navigate('/messanger')
+            }
+
             // const res = await fetch('http://localhost:8888/chats', {
                 // headers: {
                             // 'Authorization': token
@@ -144,12 +170,12 @@ const Messanger = () => {
             const [rawChats, rawUsers] = await Promise.all([
                 fetch('http://localhost:8888/chats', {
                     headers: {
-                        'authorization': token
+                        'authorization': data.token
                     },
                 }),
                 fetch('http://localhost:8888/users', {
                     headers: {
-                        'authorization': token
+                        'authorization': data.token
                     },
                 })
             ])

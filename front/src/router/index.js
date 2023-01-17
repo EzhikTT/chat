@@ -6,13 +6,13 @@ import Settings from '../pages/Settings.jsx'
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: '/main',
         element: <Main/>
     },
-{
-    path: '/messanger',
+    {
+        path: '/',
         element: <Messanger/>
-},
+    },
     {
         path: '/settings',
         element: <Settings/>

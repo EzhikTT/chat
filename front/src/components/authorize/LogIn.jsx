@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToken } from '../../store/main'
 import { setUser } from "../../store/settings";
 import { useNavigate } from "react-router-dom";
 
+import styles from './LogIn.module.scss'
+
 const LogIn = () => {
+
+    const refLoginInput = useRef()
+    const refSubmitButton = useRef()
 
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
@@ -13,12 +18,26 @@ const LogIn = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    useEffect(() => {
+        refLoginInput.current.focus()
+    }, [])
+
+    useEffect(() => {
+        if(login && password) {
+            refSubmitButton.current.disabled = false
+        }
+        else {
+            refSubmitButton.current.disabled = true
+        }
+    }, [login, password])
+
     const submit = async (event) => {
         event.preventDefault()
         const raw = await fetch('http://localhost:8888/login', {
             method: 'post',
             body: JSON.stringify({
-                login, password
+                login: 'newuser1', 
+                password: 'newuser1'
             })
         })
         const data = await raw.json()
@@ -39,16 +58,16 @@ const LogIn = () => {
         }
     }
 
-   return <form onSubmit={(e) => submit(e)}>
+   return <form onSubmit={(e) => submit(e)} className={styles.form}>
         <label>
             <span>login</span>
-            <input type="text" value={login} onChange={e => setLogin(e.target.value)}/>
+            <input autoComplete="false" type="text" value={login} onChange={e => setLogin(e.target.value)} ref={refLoginInput}/>
         </label>
         <label>
             <span>password</span>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)}/>
+            <input autoComplete="false" type="password" value={password} onChange={e => setPassword(e.target.value)}/>
         </label>
-        <button>log in</button>
+        <button ref={refSubmitButton} disabled>log in</button>
    </form> 
 }
 

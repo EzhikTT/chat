@@ -4,12 +4,12 @@ import { useDispatch } from "react-redux";
 import blank from '../../assets/avatar.png'
 import { setChatByUser } from "../../store/messanger";
 
-import '../../style/dialogue.css'
+import styles from './Dialogue.module.scss'
 
 const Dialogue = ({userName, message, count, time, avatar, userId}) => {
     const dispatch = useDispatch()
 
-    return <div className='dialogue' onClick={() => dispatch(setChatByUser(userId))}>
+    return <div className={styles.dialogue} onClick={() => dispatch(setChatByUser(userId))}>
         <img src={avatar || blank}/>
         <div>
             <div>{userName}</div>
